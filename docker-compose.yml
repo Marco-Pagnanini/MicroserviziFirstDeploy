@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build: ./eureka-server      # Nome della cartella del server Eureka
+    ports:
+      - "8761:8761"
+    container_name: eureka-server
+
+  servizio-prodotti:
+    build: ./servizio-prodotti  # Nome della cartella del servizio prodotti
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_URI=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+
+  servizio-ordini:
+    build: ./servizio-ordini    # Nome della cartella del servizio ordini
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_URI=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
